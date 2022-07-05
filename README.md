@@ -27,3 +27,6 @@ Checkout master branch from the repo
 run query --> create db recipemanagement;
 run RecipeManagementApplication.java file. Tables will be automatically generated.
 Swagger is up .Data can be inserted with it and crud test also.
+
+
+Test
