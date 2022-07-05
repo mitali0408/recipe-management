@@ -67,7 +67,7 @@ public class RecipeController
     }
 
 
-    @PutMapping("/recipe/{recipeid}")
+    @PutMapping("/updaterecipe/{recipeid}")
     public Recipe updateRecipe(@PathVariable(value = "recipeid") Long recipeId, @RequestBody Recipe updatedRecipeDetails)
         throws EntityNotFoundException
     {

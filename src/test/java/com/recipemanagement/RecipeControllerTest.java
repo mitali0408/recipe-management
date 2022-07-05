@@ -2,7 +2,7 @@ package com.recipemanagement;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,10 +12,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import com.recipe.controller.RecipeController;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes=RecipeController.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RecipeControllerTest
 {
 
@@ -26,7 +28,7 @@ public class RecipeControllerTest
 
     HttpHeaders headers = new HttpHeaders();
     @Test
-    public void testCreateStudent() throws Exception {
+    public void testCreateRecipe() throws Exception {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
@@ -38,11 +40,11 @@ public class RecipeControllerTest
     }    
 
     @Test
-    public void testRetrieveStudent() throws Exception {
+    public void testRetrieveRecipeById() throws Exception {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-          createURLWithPort("/search/1"), HttpMethod.GET, entity, String.class);
+          createURLWithPort("/searchrecipe/{recipeId}"), HttpMethod.GET, entity, String.class);
 
         String expected = "";
 

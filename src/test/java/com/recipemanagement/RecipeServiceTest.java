@@ -9,13 +9,14 @@ import java.util.Optional;
 
 import org.aspectj.lang.annotation.Before;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.recipe.exception.ConstraintsViolationException;
@@ -25,8 +26,8 @@ import com.recipe.model.Recipe;
 import com.recipe.repository.RecipeRepository;
 import com.recipe.service.RecipeService;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes=RecipeService.class)
 public class RecipeServiceTest
 {
 
@@ -56,17 +57,18 @@ public class RecipeServiceTest
         recipeServingCount = 3;
         recipeIdNotExisting = 4;
         recipeIngredients = "Chicken, flour";
-        ingredients.setRecipeIngredients(recipeIngredients);
+       // ingredients.setRecipeIngredients(recipeIngredients);
 
     }
 
 
     @Before(value = "")
-    public void setUp()
+    public void setup()
     {
         Mockito.when(recipeRepository.findAll()).thenReturn(generateRecipeForMock(recipeId));
         Mockito.when(recipeRepository.findByRecipeType(recipeType)).thenReturn(generateRecipeForMock(recipeId));
         Mockito.when(recipeRepository.findByRecipeServingCount(recipeServingCount)).thenReturn(generateRecipeForMock(recipeId));
+        Mockito.when(recipeRepository.save(new Recipe())).thenReturn(generateSingleRecipeForMock(recipeId));
     }
 
 
@@ -76,7 +78,7 @@ public class RecipeServiceTest
     {
 
         List<Recipe> recipeList = recipeRepository.findByRecipeServingCount(recipeServingCount);
-        Recipe recipe = recipeList.get(0);
+       for(Recipe recipe:recipeList) {
 
         assertThat(recipe.getId(), is(recipeId));
         assertThat(recipe.getRecipeInstructions(), is(recipeInstructions));
@@ -84,6 +86,7 @@ public class RecipeServiceTest
         assertThat(recipe.getRecipeServingCount(), is(recipeServingCount));
         assertThat(recipe.getIngredients().getRecipeIngredients(), is(recipeIngredients));
         assertThat(recipe.getRecipeType(), is(recipeType));
+       }
 
     }
 
@@ -103,11 +106,10 @@ public class RecipeServiceTest
     public void whenSaverecipe_thenCorrectCreatedId() throws ConstraintsViolationException
     {
         setUpSaveException();
-
-        Recipe recipe = new Recipe();
-        generateRecipeForMock(1l);
-        Recipe recipeCreated = recipeService.addNewRecipe(recipe);
-
+        Recipe recipeCreated = null ;
+        for(Recipe recipe : generateRecipeForMock(1l)) {
+            recipeCreated= recipeService.addNewRecipe(recipe);
+    }
         assertThat(recipeCreated.getId(), is(recipeId));
     }
 
@@ -140,7 +142,21 @@ public class RecipeServiceTest
         recipeList.add(recipe);
         return recipeList;
     }
+    private Recipe generateSingleRecipeForMock(long id)
+    {
+        List<Recipe> recipeList = new ArrayList<>();
 
+        Recipe recipe = new Recipe();
+        Ingredients ingredient = new Ingredients();
+        ingredient.setId(1l);
+        ingredient.setRecipeIngredients("chicken,flour");
+        recipe.setIngredients(ingredient);
+        recipe.setRecipeType("non-veg");
+        recipe.setRecipeName("Chicken pasta");
+        recipe.setRecipeServingCount(4);
+        recipe.setId(1L);
+        return recipe;
+    }
 
     private void setUpSaveException()
     {

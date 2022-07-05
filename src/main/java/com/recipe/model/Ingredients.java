@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,8 +23,9 @@ public class Ingredients implements Serializable
 {
 
     @Id
-    @Column(name = "id", insertable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="INGREDIENTS_SEQ",sequenceName="INGREDIENTS_SEQ",initialValue=1,allocationSize=1)
+    @GeneratedValue(generator="INGREDIENTS_SEQ")
+    @JsonIgnore
     private Long id;
 
     @Column(nullable = false)
