@@ -23,7 +23,6 @@ public class Recipe implements Serializable
     @Id
     @SequenceGenerator(name="RECIPE_SEQ",sequenceName="RECIPE_SEQ",allocationSize=1,initialValue=1)
     @GeneratedValue(generator="RECIPE_SEQ")
-    @JsonIgnore
     private Long id;
 
     @Column(nullable = false)

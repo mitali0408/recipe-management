@@ -25,7 +25,6 @@ public class Ingredients implements Serializable
     @Id
     @SequenceGenerator(name="INGREDIENTS_SEQ",sequenceName="INGREDIENTS_SEQ",initialValue=1,allocationSize=1)
     @GeneratedValue(generator="INGREDIENTS_SEQ")
-    @JsonIgnore
     private Long id;
 
     @Column(nullable = false)

@@ -19,7 +19,8 @@ public class RecipeManagementApplication
     {
         SpringApplication.run(RecipeManagementApplication.class, args);
     }
-    
+
+
     @Bean
     public Docket docket()
     {
@@ -30,10 +31,12 @@ public class RecipeManagementApplication
             .build()
             .apiInfo(generateApiInfo());
     }
-    
+
+
     private ApiInfo generateApiInfo()
     {
-        return new ApiInfo("Recipe Management Service", "This service is to manage favourite recipes", "Version 1.0" ,
+        return new ApiInfo(
+            "Recipe Management Service", "This service is to manage favourite recipes", "Version 1.0",
             null, null, null, null);
     }
 
